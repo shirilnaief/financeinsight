@@ -3,10 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
-import '../../../core/app_export.dart';
 import '../../../models/ipo_model.dart';
 import './ipo_status_tag_widget.dart';
-import 'ipo_status_tag_widget.dart';
 
 class IPOCardWidget extends StatelessWidget {
   final IPOModel ipo;
