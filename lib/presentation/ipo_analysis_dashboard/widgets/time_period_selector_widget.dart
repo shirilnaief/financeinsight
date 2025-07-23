@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-
 class TimePeriodSelectorWidget extends StatelessWidget {
   final String selectedPeriod;
   final Function(String) onPeriodChanged;
