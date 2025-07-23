@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../presentation/auth/forgot_password_screen.dart';
+import '../presentation/auth/login_screen.dart';
+import '../presentation/auth/register_screen.dart';
 import '../presentation/financial_dashboard/financial_dashboard_screen.dart';
 import '../presentation/ipo_analysis_dashboard/ipo_analysis_dashboard.dart';
 import '../presentation/ipo_listings/ipo_listings.dart';
@@ -12,6 +15,9 @@ class AppRoutes {
   // TODO: Add your routes here
   static const String splashScreen = '/splash-screen';
   static const String initial = '/';
+  static const String login = '/login';
+  static const String register = '/register';
+  static const String forgotPassword = '/forgot-password';
   static const String userProfile = '/user-profile';
   static const String financialDashboard = '/financial-dashboard';
   static const String ipoListings = '/ipo-listings';
@@ -22,6 +28,9 @@ class AppRoutes {
   static Map<String, WidgetBuilder> routes = {
     splashScreen: (context) => const SplashScreen(),
     initial: (context) => const SplashScreen(),
+    login: (context) => const LoginScreen(),
+    register: (context) => const RegisterScreen(),
+    forgotPassword: (context) => const ForgotPasswordScreen(),
     userProfile: (context) => const UserProfile(),
     financialDashboard: (context) => const FinancialDashboardScreen(),
     ipoListings: (context) => const IPOListingsScreen(),

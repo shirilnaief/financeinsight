@@ -59,6 +59,7 @@ class FinancialReport {
   final List<FinancialInsight> insights;
   final Map<String, dynamic> keyMetrics;
   final DateTime analysisDate;
+  final String? id; // Supabase ID
 
   FinancialReport({
     required this.fileName,
@@ -67,19 +68,25 @@ class FinancialReport {
     required this.insights,
     required this.keyMetrics,
     required this.analysisDate,
+    this.id,
   });
 
   factory FinancialReport.fromJson(Map<String, dynamic> json) {
     return FinancialReport(
-      fileName: json['fileName'] ?? '',
-      companyName: json['companyName'] ?? '',
-      reportPeriod: json['reportPeriod'] ?? '',
+      fileName: json['fileName'] ?? json['file_name'] ?? '',
+      companyName: json['companyName'] ?? json['company_name'] ?? '',
+      reportPeriod: json['reportPeriod'] ?? json['report_period'] ?? '',
       insights: (json['insights'] as List<dynamic>?)
               ?.map((insight) => FinancialInsight.fromJson(insight))
               .toList() ??
           [],
-      keyMetrics: json['keyMetrics'] ?? {},
-      analysisDate: DateTime.parse(json['analysisDate']),
+      keyMetrics: json['keyMetrics'] ?? json['key_metrics'] ?? {},
+      analysisDate: json['analysisDate'] != null
+          ? DateTime.parse(json['analysisDate'])
+          : json['analysis_date'] != null
+              ? DateTime.parse(json['analysis_date'])
+              : DateTime.now(),
+      id: json['id'],
     );
   }
 
@@ -91,6 +98,39 @@ class FinancialReport {
       'insights': insights.map((insight) => insight.toJson()).toList(),
       'keyMetrics': keyMetrics,
       'analysisDate': analysisDate.toIso8601String(),
+      'id': id,
     };
+  }
+
+  // Convert to Supabase format
+  Map<String, dynamic> toSupabaseJson() {
+    return {
+      'file_name': fileName,
+      'company_name': companyName,
+      'report_period': reportPeriod,
+      'key_metrics': keyMetrics,
+      'analysis_date': analysisDate.toIso8601String(),
+      if (id != null) 'id': id,
+    };
+  }
+
+  FinancialReport copyWith({
+    String? fileName,
+    String? companyName,
+    String? reportPeriod,
+    List<FinancialInsight>? insights,
+    Map<String, dynamic>? keyMetrics,
+    DateTime? analysisDate,
+    String? id,
+  }) {
+    return FinancialReport(
+      fileName: fileName ?? this.fileName,
+      companyName: companyName ?? this.companyName,
+      reportPeriod: reportPeriod ?? this.reportPeriod,
+      insights: insights ?? this.insights,
+      keyMetrics: keyMetrics ?? this.keyMetrics,
+      analysisDate: analysisDate ?? this.analysisDate,
+      id: id ?? this.id,
+    );
   }
 }

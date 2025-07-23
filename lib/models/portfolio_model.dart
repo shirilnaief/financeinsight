@@ -30,6 +30,64 @@ class PortfolioHolding {
       ((currentPrice - purchasePrice) / purchasePrice) * 100;
   bool get isProfit => profitLoss >= 0;
 
+  // Convert from Supabase JSON
+  factory PortfolioHolding.fromJson(Map<String, dynamic> json) {
+    return PortfolioHolding(
+      id: json['id'],
+      companyName: json['company_name'],
+      companyLogo: json['company_logo'] ?? '',
+      symbol: json['symbol'],
+      quantity: json['quantity'],
+      purchasePrice: double.parse(json['purchase_price'].toString()),
+      currentPrice: double.parse(json['current_price'].toString()),
+      purchaseDate: DateTime.parse(json['purchase_date']),
+      category: json['category'],
+      dividendYield: double.parse(json['dividend_yield']?.toString() ?? '0.0'),
+    );
+  }
+
+  // Convert to Supabase JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'company_name': companyName,
+      'company_logo': companyLogo,
+      'symbol': symbol,
+      'quantity': quantity,
+      'purchase_price': purchasePrice,
+      'current_price': currentPrice,
+      'purchase_date': purchaseDate.toIso8601String(),
+      'category': category,
+      'dividend_yield': dividendYield,
+    };
+  }
+
+  PortfolioHolding copyWith({
+    String? id,
+    String? companyName,
+    String? companyLogo,
+    String? symbol,
+    int? quantity,
+    double? purchasePrice,
+    double? currentPrice,
+    DateTime? purchaseDate,
+    String? category,
+    double? dividendYield,
+  }) {
+    return PortfolioHolding(
+      id: id ?? this.id,
+      companyName: companyName ?? this.companyName,
+      companyLogo: companyLogo ?? this.companyLogo,
+      symbol: symbol ?? this.symbol,
+      quantity: quantity ?? this.quantity,
+      purchasePrice: purchasePrice ?? this.purchasePrice,
+      currentPrice: currentPrice ?? this.currentPrice,
+      purchaseDate: purchaseDate ?? this.purchaseDate,
+      category: category ?? this.category,
+      dividendYield: dividendYield ?? this.dividendYield,
+    );
+  }
+
   static List<PortfolioHolding> getSampleData() {
     final now = DateTime.now();
     return [
@@ -113,6 +171,39 @@ class PortfolioTransaction {
   });
 
   double get totalAmount => (quantity * price) + fees;
+
+  // Convert from Supabase JSON
+  factory PortfolioTransaction.fromJson(Map<String, dynamic> json) {
+    return PortfolioTransaction(
+      id: json['id'],
+      holdingId: json['holding_id'] ?? '',
+      companyName: json['company_name'],
+      symbol: json['symbol'],
+      type: TransactionType.values.firstWhere(
+        (type) => type.name == json['transaction_type'],
+        orElse: () => TransactionType.buy,
+      ),
+      quantity: json['quantity'],
+      price: double.parse(json['price'].toString()),
+      date: DateTime.parse(json['transaction_date']),
+      fees: double.parse(json['fees']?.toString() ?? '0.0'),
+    );
+  }
+
+  // Convert to Supabase JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'holding_id': holdingId.isEmpty ? null : holdingId,
+      'company_name': companyName,
+      'symbol': symbol,
+      'transaction_type': type.name,
+      'quantity': quantity,
+      'price': price,
+      'transaction_date': date.toIso8601String(),
+      'fees': fees,
+    };
+  }
 
   static List<PortfolioTransaction> getSampleData() {
     final now = DateTime.now();

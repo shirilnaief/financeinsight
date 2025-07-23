@@ -61,6 +61,48 @@ class IPOModel {
     );
   }
 
+  // Convert from Supabase JSON
+  factory IPOModel.fromJson(Map<String, dynamic> json) {
+    return IPOModel(
+      id: json['id'],
+      companyName: json['company_name'],
+      companyLogo: json['company_logo'] ?? '',
+      priceRange: json['price_range'],
+      lotSize: json['lot_size'],
+      issueSize: json['issue_size'],
+      openDate: DateTime.parse(json['open_date']),
+      closeDate: DateTime.parse(json['close_date']),
+      listingDate: json['listing_date'] != null
+          ? DateTime.parse(json['listing_date'])
+          : null,
+      status: IPOStatus.values.firstWhere(
+        (status) => status.name == json['status'],
+        orElse: () => IPOStatus.upcoming,
+      ),
+      category: json['category'],
+      description: json['description'] ?? '',
+      isBookmarked: json['is_bookmarked'] ?? false,
+    );
+  }
+
+  // Convert to Supabase JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'company_name': companyName,
+      'company_logo': companyLogo,
+      'price_range': priceRange,
+      'lot_size': lotSize,
+      'issue_size': issueSize,
+      'open_date': openDate.toIso8601String(),
+      'close_date': closeDate.toIso8601String(),
+      'listing_date': listingDate?.toIso8601String(),
+      'status': status.name,
+      'category': category,
+      'description': description,
+    };
+  }
+
   static List<IPOModel> getSampleData() {
     final now = DateTime.now();
     return [

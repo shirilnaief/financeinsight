@@ -11,6 +11,7 @@ import 'package:flutter/services.dart';
 import 'package:sizer/sizer.dart';
 
 import '../core/app_export.dart';
+import '../services/supabase_service.dart';
 import '../widgets/custom_error_widget.dart';
 
 var backendURL = "https://financeins7094back.builtwithrocket.new/log-error";
@@ -20,6 +21,9 @@ void main() async {
     _sendOverflowError(details);
   };
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Supabase
+  await SupabaseService.initialize();
 
   // 🚨 CRITICAL: Custom error handling - DO NOT REMOVE
   ErrorWidget.builder = (FlutterErrorDetails details) {

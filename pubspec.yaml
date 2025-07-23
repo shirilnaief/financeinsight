@@ -19,6 +19,8 @@ dependencies:
   path_provider: ^2.1.4
   web: any
   intl: any
+  supabase_flutter: ^2.9.1
+  supabase: ^2.8.0
 dev_dependencies: 
   flutter_test: 
     sdk: flutter
